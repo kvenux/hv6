@@ -13,3 +13,5 @@
 #define NPCIDEV 64  /* maximum number of PCI devices */
 #define NINTREMAP 8 /* maximum number of interrupt remapping entries */
 #define NPCIPAGE ((PCI_END - PCI_START) / PAGE_SIZE)
+
+#define NOCAP 64 /* maxium number of caps per process */

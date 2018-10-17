@@ -56,6 +56,7 @@ file_type_t = None
 proc_state_t = None
 intremap_state_t = None
 
+cap_rights_t = None
 
 # Fetch the enums from the llvm metadata and populate this module with their values
 _populate_enums()
@@ -80,6 +81,7 @@ NPCIDEV = 64
 NINTREMAP = 8
 NPCIPAGE = (PCI_END - PCI_START) / PAGE_SIZE
 
+NOCAP = 64
 
 bool_t = z3.BoolSort()
 

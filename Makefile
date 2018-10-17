@@ -55,19 +55,21 @@ HOST_CC      := cc
 PY2          := python2
 
 # Try the latest version first
-LLVM_CONFIG  := llvm-config-5.0
-ifeq ($(shell which $(LLVM_CONFIG) 2> /dev/null),)
-LLVM_CONFIG  := llvm-config
-endif
+# LLVM_CONFIG  := llvm-config-5.0
+# ifeq ($(shell which $(LLVM_CONFIG) 2> /dev/null),)
+# LLVM_CONFIG  := llvm-config
+# endif
 # Homebrew hides llvm here
-ifeq ($(shell which $(LLVM_CONFIG) 2> /dev/null),)
-LLVM_CONFIG  := /usr/local/opt/llvm/bin/llvm-config
-endif
-ifeq ($(shell which $(LLVM_CONFIG) 2> /dev/null),)
-LLVM_PREFIX  :=
-else
-LLVM_PREFIX  := "$(shell '$(LLVM_CONFIG)' --bindir)/"
-endif
+# ifeq ($(shell which $(LLVM_CONFIG) 2> /dev/null),)
+# LLVM_CONFIG  := /usr/local/opt/llvm/bin/llvm-config
+# endif
+# ifeq ($(shell which $(LLVM_CONFIG) 2> /dev/null),)
+# LLVM_PREFIX  :=
+# else
+# LLVM_PREFIX  := "$(shell '$(LLVM_CONFIG)' --bindir)/"
+# endif
+LLVM_CONFIG  := /Users/kvenux/llvm/bin/llvm-config
+LLVM_PREFIX  := /Users/kvenux/llvm/bin/
 LLVM_CC      += $(LLVM_PREFIX)clang -target $(ARCH)-linux-gnu -Wno-initializer-overrides
 LLVM_LINK    := $(LLVM_PREFIX)llvm-link
 
@@ -219,6 +221,8 @@ $(O)/%.dtb: %.dts
 
 clean:
 	-rm -rf $(O)
+
+print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true
 
 format:
 	find . -regextype egrep -regex '.*\.(c|h|cc|hh|cpp)$$' -not -path './user/lwip/*' -print -exec clang-format -style=file -i {} \;

@@ -89,6 +89,17 @@ struct page_desc {
     } link;
 };
 
+enum cap_rights {
+    SEND = 0,
+    GRANT,
+    REMOVE,
+};
+
+struct capability {
+    enum cap_rights rights;
+    pid_t target;
+};
+
 enum proc_state {
     PROC_UNUSED = 0,
     PROC_EMBRYO,

@@ -535,6 +535,7 @@ class HV6(HV6Base):
         self._prove(z3.Exists([pid], spec.state_equiv(self.ctx, newstate)))
 
     def _syscall_generic(self, name):
+        print '_syscall_generic',name
         args = syscall_spec.get_syscall_args(name)
         res = self.ctx.call('@' + name, *args)
         cond, newstate = getattr(spec, name)(self.state, *args)
@@ -573,7 +574,9 @@ class HV6SpecMeta(HV6Meta):
         corollaries = dct.get('corollaries', [])
 
         for lemma in lemmas:
+            print lemma
             for syscall in syscalls:
+                # print syscall
                 dct['test_{}_{}'.format(syscall, lemma)] = lambda self, syscall=syscall, lemma=lemma: \
                     self._check_invariant(syscall, lemma)
                 dct['test_{}_initial'.format(lemma)] = lambda self, lemma=lemma: self._check_initial(lemma)
@@ -601,6 +604,7 @@ class HV6TopLemmas(HV6Base):
             del self.solver
 
     def _check_invariant(self, syscall, lemma):
+        print '_check_invariant'
         inv = getattr(spec, 'spec_lemma_{}'.format(lemma))
         args = syscall_spec.get_syscall_args(syscall)
 
@@ -623,6 +627,7 @@ class HV6TopLemmas(HV6Base):
             set_trace()
 
     def _check_corollary(self, pre, post):
+        print '_check_corollary'
         pre = getattr(spec, 'spec_lemma_{}'.format(pre))
         post = getattr(spec, 'spec_corollary_{}'.format(post))
 
@@ -637,6 +642,7 @@ class HV6TopLemmas(HV6Base):
         self.assertEquals(self.solver.check(), z3.sat)
 
     def _check_initial(self, lemma):
+        print '_check_corollary'
         self.state = self.state.initial()
         inv = getattr(spec, 'spec_lemma_{}'.format(lemma))
         constraints = z3.And(spec.spec_invariants(self.state), inv(self.state))
@@ -686,5 +692,6 @@ if __name__ == "__main__":
         Solver = z3.Solver
 
     print "Using z3 v" + '.'.join(map(str, z3.get_version()))
+    # print sys.argv
 
     unittest.main()

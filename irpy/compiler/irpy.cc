@@ -40,6 +40,7 @@ int main(int argc, char **argv)
     }
 
     std::clock_t parsedone = std::clock();
+    std::cerr << "Parsing file name " <<  filename << " ." << std::endl;
     std::cerr << "Parsing took " << cycles_to_ms(parsedone - start) << " ms." << std::endl;
 
     irpy::PyLLVMEmitter emitter{std::cout, module.get()};
